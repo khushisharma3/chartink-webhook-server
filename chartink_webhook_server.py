@@ -98,10 +98,23 @@ class ChartinkWebhookHandler:
                 })
             
             df = pd.DataFrame(stock_data)
-            if not os.path.exists(self.excel_file):
-                return {"status": "error", "message": "Excel template not found"}
             
-            workbook = load_workbook(self.excel_file)
+            # Create Excel file if it doesn't exist
+            if not os.path.exists(self.excel_file):
+                print(f"Creating new Excel file: {self.excel_file}")
+                workbook = openpyxl.Workbook()
+                # Remove default sheet
+                workbook.remove(workbook.active)
+                # Create Master_List sheet
+                master_sheet = workbook.create_sheet("Master_List")
+                master_headers = ["Stock_Symbol", "First_Appearance_Date", "First_Iteration", "Total_Appearances", "Last_Updated"]
+                master_sheet.append(master_headers)
+                # Create TradingView_Export sheet
+                tv_sheet = workbook.create_sheet("TradingView_Export")
+                tv_sheet.append(["TradingView_Symbols"])
+                workbook.save(self.excel_file)
+            else:
+                workbook = load_workbook(self.excel_file)
             sheet_name = f"Iteration_{self.current_iteration}"
             if sheet_name in workbook.sheetnames:
                 workbook.remove(workbook[sheet_name])
