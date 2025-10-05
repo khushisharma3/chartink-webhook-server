@@ -1,0 +1,21 @@
+# Local development files
+chartink_webhook_env/
+*.pyc
+__pycache__/
+.env
+.DS_Store
+venv/
+env/
+
+# Local Excel files (will be created on server)
+test*.xlsx
+*.xlsx
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
